@@ -4,7 +4,12 @@
 #include "nixio.h"
 #include <sys/types.h>
 
-#ifndef WITHOUT_OPENSSL
+#if defined (WITH_WOLFSSL)
+#include <wolfssl/options.h>
+#include <wolfssl/openssl/ssl.h>
+#include <wolfssl/openssl/md5.h>
+#include <wolfssl/openssl/sha.h>
+#elif !defined (WITH_AXTLS)
 #include <openssl/ssl.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>

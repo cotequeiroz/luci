@@ -40,7 +40,6 @@
 #include "config.h"
 
 #define WITH_AXTLS						1
-#define WITHOUT_OPENSSL					1
 #define SSL_OP_NO_SSLv3					0x02000000L
 #define SSL_OP_NO_SSLv2					0x01000000L
 #define SSL_FILETYPE_PEM				1

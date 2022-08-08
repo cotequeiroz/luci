@@ -30,11 +30,9 @@ ifeq ($(NIXIO_TLS),openssl)
 	NIXIO_LDFLAGS += -lssl -lcrypto
 endif
 
-ifeq ($(NIXIO_TLS),cyassl)
-	NIXIO_LDFLAGS += -lcyassl
-	TLS_DEPENDS = cyassl-compat.o
-	TLS_CFLAGS = -include cyassl-compat.h
-	NIXIO_OBJ += cyassl-compat.o
+ifeq ($(NIXIO_TLS),wolfssl)
+	NIXIO_LDFLAGS += -lwolfssl
+	TLS_CFLAGS = -DWITH_WOLFSSL
 endif
 
 ifeq ($(NIXIO_TLS),)
@@ -104,7 +102,7 @@ libaxtls.a: $(AXTLS_DIR)/.prepared
 	#
 	# *** WARNING ***
 	# The use of the axTLS cryptographical provider is discouraged!
-	# Please switch to either CyaSSL or OpenSSL.
+	# Please switch to either wolfSSL or OpenSSL.
 	# Support for axTLS might be removed in the near future.
 	#
 	#

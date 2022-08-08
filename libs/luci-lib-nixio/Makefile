@@ -7,12 +7,13 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=NIXIO POSIX library
-LUCI_DEPENDS:=+LUCI_NIXIO_OPENSSL:libopenssl +liblua
+LUCI_DEPENDS:=+LUCI_NIXIO_OPENSSL:libopenssl +LUCI_NIXIO_WOLFSSL:libwolfssl +liblua
 
 PKG_LICENSE:=Apache-2.0
 
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_LUCI_NIXIO_NOTLS \
+	CONFIG_LUCI_NIXIO_WOLFSSL \
 	CONFIG_LUCI_NIXIO_OPENSSL
 
 define Package/luci-lib-nixio/config
@@ -23,6 +24,9 @@ define Package/luci-lib-nixio/config
 		config LUCI_NIXIO_NOTLS
 			bool "Disabled"
 
+		config LUCI_NIXIO_WOLFSSL
+			bool "wolfSSL"
+
 		config LUCI_NIXIO_OPENSSL
 			bool "OpenSSL"
 	endchoice
@@ -31,6 +35,8 @@ endef
 
 ifneq ($(CONFIG_LUCI_NIXIO_OPENSSL),)
   NIXIO_TLS:=openssl
+else ifneq ($(CONFIG_LUCI_NIXIO_WOLFSSL),)
+  NIXIO_TLS:=wolfssl
 else
   NIXIO_TLS:=
 endif
