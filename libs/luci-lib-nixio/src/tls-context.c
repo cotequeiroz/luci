@@ -54,9 +54,9 @@ static int nixio_tls_ctx(lua_State * L) {
 	lua_setmetatable(L, -2);
 
 	if (!strcmp(method, "client")) {
-		*ctx = SSL_CTX_new(TLSv1_client_method());
+		*ctx = SSL_CTX_new(tls_client_method());
 	} else if (!strcmp(method, "server")) {
-		*ctx = SSL_CTX_new(TLSv1_server_method());
+		*ctx = SSL_CTX_new(tls_server_method());
 	} else {
 		return luaL_argerror(L, 1, "supported values: client, server");
 	}
@@ -67,6 +67,11 @@ static int nixio_tls_ctx(lua_State * L) {
 
 #ifdef WITH_WOLFSSL
 	SSL_CTX_set_verify(*ctx, SSL_VERIFY_NONE, NULL);
+#endif
+#ifndef WITH_AXTLS
+	if (!SSL_CTX_set_min_proto_version(*ctx, TLS1_VERSION)) {
+		return luaL_error(L, "unable to set minimum TLS version");
+	}
 #endif
 
 	return 1;

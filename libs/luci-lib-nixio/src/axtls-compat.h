@@ -67,6 +67,9 @@ void *TLSv1_client_method(void);
 void *SSLv23_method(void);
 void *TLSv1_method(void);
 
+#define tls_server_method TLSv1_server_method
+#define tls_client_method TLSv1_client_method
+
 
 typedef void * (*ssl_func_type_t)(void);
 typedef void * (*bio_func_type_t)(void);
